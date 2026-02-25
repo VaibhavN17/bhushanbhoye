@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LENS & LIGHT | Photography Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #f5f5f5;
+            scroll-behavior: smooth;
+        }
+
+        .serif { font-family: 'Playfair Display', serif; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Masonry-like Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-auto-rows: 200px;
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gallery-item:nth-child(3n) { grid-row: span 2; }
+        .gallery-item:nth-child(5n) { grid-column: span 1; grid-row: span 3; }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s scale;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .nav-blur {
+            backdrop-filter: blur(12px);
+            background: rgba(10, 10, 10, 0.8);
+        }
+
+        .blog-card {
+            background: #161616;
+            border: 1px solid #222;
+            transition: border-color 0.3s ease;
+        }
+
+        .blog-card:hover {
+            border-color: #444;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 nav-blur border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="text-2xl font-bold tracking-tighter serif italic text-white">LENS<span class="text-blue-500">.</span></a>
+            
+            <div class="hidden md:flex space-x-10 text-sm font-medium uppercase tracking-widest text-gray-400">
+                <a href="#home" class="hover:text-white transition">Home</a>
+                <a href="#gallery" class="hover:text-white transition">Gallery</a>
+                <a href="#blog" class="hover:text-white transition">Journal</a>
+                <a href="#contact" class="hover:text-white transition">Contact</a>
+            </div>
+
+            <button onclick="toggleUploadModal()" class="bg-white text-black px-5 py-2 rounded-full text-xs font-bold uppercase tracking-tighter hover:bg-gray-200 transition">
+                Post Work
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="relative h-screen flex items-center justify-center text-center px-6">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&q=80&w=2070" class="w-full h-full object-cover opacity-40" alt="Hero Background">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-4xl fade-in">
+            <span class="text-blue-500 font-semibold tracking-widest uppercase text-sm mb-4 block">Visual Storyteller</span>
+            <h1 class="text-6xl md:text-8xl font-bold serif mb-6">Capturing the <br><span class="italic">unseen</span> moments.</h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed">
+                Exploring the intersection of light, shadow, and human emotion through the lens of a professional photographer.
+            </p>
+            <div class="mt-10">
+                <a href="#gallery" class="inline-block border border-white/20 px-8 py-4 rounded-full hover:bg-white hover:text-black transition duration-300">Explore Portfolio</a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+            <i class="fa-solid fa-arrow-down"></i>
+        </div>
+    </header>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+            <div>
+                <h2 class="text-4xl font-bold serif mb-2">Selected Works</h2>
+                <p class="text-gray-500">A collection of landscape and urban photography.</p>
+            </div>
+            <div class="flex space-x-4">
+                <button class="text-sm font-semibold border-b-2 border-blue-500 pb-1">All</button>
+                <button class="text-sm font-semibold text-gray-600 hover:text-gray-400 pb-1">Nature</button>
+                <button class="text-sm font-semibold text-gray-600 hover:text-gray-400 pb-1">Urban</button>
+            </div>
+        </div>
+
+        <div class="gallery-grid" id="photoContainer">
+            <!-- Photos will be injected here -->
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="py-24 bg-[#0f0f0f]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold serif mb-4">Photography Journal</h2>
+                <p class="text-gray-500 max-w-xl mx-auto">Behind the scenes, technical tips, and stories from my travels across the globe.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8" id="blogContainer">
+                <!-- Blog posts will be injected here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / Footer -->
+    <footer id="contact" class="py-24 px-6 border-t border-white/5">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
+            <div>
+                <h2 class="text-5xl font-bold serif mb-8 italic">Let's work <br>together.</h2>
+                <p class="text-gray-400 mb-8 max-w-sm">Currently available for worldwide commissions and collaborations. Reach out for a coffee or a project.</p>
+                <div class="space-y-4">
+                    <p class="flex items-center space-x-4"><i class="fa-solid fa-envelope text-blue-500"></i> <span>hello@lensphotography.com</span></p>
+                    <div class="flex space-x-6 pt-4 text-xl">
+                        <a href="#" class="hover:text-blue-500 transition"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="hover:text-blue-500 transition"><i class="fa-brands fa-behance"></i></a>
+                        <a href="#" class="hover:text-blue-500 transition"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <form class="space-y-6">
+                <div class="grid grid-cols-2 gap-6">
+                    <input type="text" placeholder="Name" class="bg-[#161616] border border-white/10 p-4 rounded-lg focus:outline-none focus:border-blue-500 w-full">
+                    <input type="email" placeholder="Email" class="bg-[#161616] border border-white/10 p-4 rounded-lg focus:outline-none focus:border-blue-500 w-full">
+                </div>
+                <textarea rows="5" placeholder="Your Message" class="bg-[#161616] border border-white/10 p-4 rounded-lg focus:outline-none focus:border-blue-500 w-full"></textarea>
+                <button class="w-full bg-blue-600 py-4 rounded-lg font-bold hover:bg-blue-700 transition">Send Message</button>
+            </form>
+        </div>
+        <div class="max-w-7xl mx-auto mt-24 pt-8 border-t border-white/5 text-center text-gray-600 text-sm">
+            &copy; 2024 LENS Photography Studio. Built with passion.
+        </div>
+    </footer>
+
+    <!-- Upload Modal (Simulation of Backend Logic) -->
+    <div id="uploadModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-6 bg-black/90">
+        <div class="bg-[#1a1a1a] w-full max-w-lg rounded-2xl p-8 border border-white/10">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold serif">Post New Work</h3>
+                <button onclick="toggleUploadModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 font-bold">Content Type</label>
+                    <select id="postType" class="w-full bg-black/40 border border-white/10 p-3 rounded focus:outline-none">
+                        <option value="photo">Photography Item</option>
+                        <option value="blog">Blog Post</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 font-bold">Title / Caption</label>
+                    <input type="text" id="postTitle" class="w-full bg-black/40 border border-white/10 p-3 rounded focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 font-bold">Image URL (Unsplash/Direct)</label>
+                    <input type="text" id="postUrl" class="w-full bg-black/40 border border-white/10 p-3 rounded focus:outline-none" placeholder="https://...">
+                </div>
+                <div id="blogDescContainer" class="hidden">
+                    <label class="block text-xs uppercase tracking-widest text-gray-500 mb-2 font-bold">Description</label>
+                    <textarea id="postDesc" class="w-full bg-black/40 border border-white/10 p-3 rounded focus:outline-none" rows="3"></textarea>
+                </div>
+                <button onclick="handleAddPost()" class="w-full bg-white text-black py-4 rounded font-bold mt-4 hover:bg-gray-200 transition">Publish Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock Data (In real world, these would come from PHP/Database)
+        let photos = [
+            { id: 1, url: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1000', title: 'Mirror Lake', category: 'Nature' },
+            { id: 2, url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1000', title: 'Ancient Forest', category: 'Nature' },
+            { id: 3, url: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=1000', title: 'Mist on Peaks', category: 'Nature' },
+            { id: 4, url: 'https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&q=80&w=1000', title: 'Golden Gate Bridge', category: 'Urban' },
+            { id: 5, url: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&q=80&w=1000', title: 'City Lights', category: 'Urban' },
+            { id: 6, url: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=1000', title: 'Paris Streets', category: 'Urban' }
+        ];
+
+        let blogs = [
+            { id: 1, date: 'Oct 12, 2023', title: 'The Golden Hour Secret', excerpt: 'How to master the last 60 minutes of daylight for breathtaking portraits.', img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=1000' },
+            { id: 2, date: 'Nov 05, 2023', title: 'Minimalism in Nature', excerpt: 'Why less is more when capturing the vastness of the Icelandic landscape.', img: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&q=80&w=1000' },
+            { id: 3, date: 'Dec 15, 2023', title: 'Gear vs. Vision', excerpt: 'Debunking the myth that expensive equipment makes the photographer.', img: 'https://images.unsplash.com/photo-1495707902641-75cac588d2e9?auto=format&fit=crop&q=80&w=1000' }
+        ];
+
+        const photoContainer = document.getElementById('photoContainer');
+        const blogContainer = document.getElementById('blogContainer');
+        const postType = document.getElementById('postType');
+        const blogDescContainer = document.getElementById('blogDescContainer');
+
+        // Render Functions
+        function renderGallery() {
+            photoContainer.innerHTML = photos.map(photo => `
+                <div class="gallery-item fade-in">
+                    <img src="${photo.url}" alt="${photo.title}" onerror="this.src='https://via.placeholder.com/800x1200?text=Image+Not+Found'">
+                    <div class="overlay">
+                        <span class="text-xs uppercase tracking-widest text-blue-400 font-bold mb-1">${photo.category}</span>
+                        <h4 class="text-xl font-bold serif">${photo.title}</h4>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderBlogs() {
+            blogContainer.innerHTML = blogs.map(blog => `
+                <article class="blog-card rounded-2xl overflow-hidden group fade-in">
+                    <div class="h-64 overflow-hidden">
+                        <img src="${blog.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Blog Thumb">
+                    </div>
+                    <div class="p-8">
+                        <span class="text-xs text-gray-500 font-bold uppercase tracking-widest">${blog.date}</span>
+                        <h3 class="text-2xl font-bold serif mt-3 mb-4 group-hover:text-blue-500 transition">${blog.title}</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6">${blog.excerpt}</p>
+                        <a href="#" class="text-xs font-bold uppercase tracking-tighter flex items-center group">
+                            Read Story <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-2 transition"></i>
+                        </a>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // Logic for "Adding Content"
+        function toggleUploadModal() {
+            const modal = document.getElementById('uploadModal');
+            modal.classList.toggle('hidden');
+        }
+
+        postType.addEventListener('change', () => {
+            if(postType.value === 'blog') {
+                blogDescContainer.classList.remove('hidden');
+            } else {
+                blogDescContainer.classList.add('hidden');
+            }
+        });
+
+        function handleAddPost() {
+            const type = postType.value;
+            const title = document.getElementById('postTitle').value;
+            const url = document.getElementById('postUrl').value;
+            const desc = document.getElementById('postDesc').value;
+
+            if(!title || !url) return alert('Please fill in required fields.');
+
+            if(type === 'photo') {
+                photos.unshift({ id: Date.now(), url, title, category: 'Personal' });
+                renderGallery();
+            } else {
+                blogs.unshift({ 
+                    id: Date.now(), 
+                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }), 
+                    title, 
+                    excerpt: desc, 
+                    img: url 
+                });
+                renderBlogs();
+            }
+
+            toggleUploadModal();
+            // Reset fields
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postUrl').value = '';
+            document.getElementById('postDesc').value = '';
+        }
+
+        // Initial Load
+        window.onload = () => {
+            renderGallery();
+            renderBlogs();
+        };
+    </script>
+</body>
+</html>
